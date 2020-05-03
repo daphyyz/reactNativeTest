@@ -1,33 +1,51 @@
 import React from 'react';
-import { 
+import {
   StyleSheet
-  ,Text 
-  ,View 
-  ,StatusBar
-  ,TextInput
-  ,Dimensions
-  ,Platform
+  , Text
+  , View
+  , ScrollView
+  , StatusBar
+  , TextInput
+  , Dimensions
+  , Platform
 } from 'react-native';
+import ToDo from "./ToDo";
+
+import { render } from 'react-dom';
 
 const { height, width } = Dimensions.get("window")
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
-      <Text style={styles.title}>Kawai To Do</Text>
-      <View style={styles.card}>
-        <TextInput style={styles.input} placeholder={"New To Do"} />        
+export default class App extends React.Component {
+  state = {
+    newToDo: ""
+  };
+  render() {
+    const { newToDo } = this.state;
+    return (
+      <View style={styles.container}>
+        <StatusBar barStyle="light-content" />
+        <Text style={styles.title}>Kawai To Do</Text>
+        <View style={styles.card}>
+          <TextInput style={styles.input} placeholder={"New To Do"} value={newToDo} onChangeText={this._controlNewToDo} placeholderTextColor={"#999"} returnKeyType={"done"} autoCorrect={false} />
+          <ScrollView>
+            <ToDo />
+          </ScrollView>
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
+  _controlNewToDo = text => {
+    this.setState({
+      newToDo: text
+    })
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F23657',
-    alignItems: 'center'    
+    alignItems: 'center'
   },
   title: {
     color: "white",
@@ -54,8 +72,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 5,
         shadowOffset: {
-          height:-1,
-          width:0
+          height: -1,
+          width: 0
         }
       },
       android: {
@@ -66,12 +84,18 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 5,
         shadowOffset: {
-          height:-1,
-          width:0
+          height: -1,
+          width: 0
         }
       }
     })
-    
+  },
+  input: {
+    padding: 20,
+    borderBottomColor: "#bbb",
+    borderBottomWidth: 1,
+    fontSize: 25
+
   }
 
 });
